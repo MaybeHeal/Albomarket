@@ -17,17 +17,21 @@ def market_places_data():
         if (('Market' in location['UniqueName'] or 'Rest' in location['UniqueName']) and
                 'Auction' not in location['Index']):
             db.add_items(table='markets', columns=('index', 'unique_name'),
-                                 values=(location['Index'], location['UniqueName']))
+                         values=(location['Index'], location['UniqueName']))
         elif location['UniqueName'] == 'Caerleon':
             db.add_items(table='markets', columns=('index', 'unique_name'),
-                                 values=(location['Index'], location['UniqueName']))
+                         values=(location['Index'], location['UniqueName']))
 
 
 def market_categories_and_subcategories_data():
     response = requests.get('https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json').json()
     db = DataBase()
+    n = 1
     for category in response['items']['shopcategories']['shopcategory']:
         db.add_item(table='categories', column='category', value=category['@id'])
+        for subcategory in category['shopsubcategory']:
+            db.add_items(table='subcategories', columns=('subcategory', 'category'), values=(subcategory['@id'], n))
+        n += 1
 
 
 if __name__ == '__main__':

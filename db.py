@@ -84,6 +84,8 @@ class DataBase:
 
 if __name__ == '__main__':
     db = DataBase()
-    db.clear_table('items')
+    db.clear_table('item_names')
     db.clear_table('markets')
+    db.clear_table('categories')
+    db.clear_table('subcategories')
 
